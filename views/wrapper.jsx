@@ -10,7 +10,7 @@ function Wrapper (content) {
                 <link rel="manifest" href="/site.webmanifest"></link>
             </head>
             <body>
-                <nav className="navBar">
+                <nav className="navbar-nav">
                     <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/places">Places</a></li>

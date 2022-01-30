@@ -16,27 +16,56 @@ router.post('/', (req, res) => {
     let cuisines = req.body.cuisines
 
     if (name.length > 0 && pic.length > 0 && city.length > 0 && state.length > 0 && cuisines.length > 0){
-        res.render("places/index", {places: [...places, {'name': name, 'pic': pic, 'city': city, 'state': state, 'cuisines': cuisines}]})
+        places.push({'name': name, 'pic': pic, 'city': city, 'state': state, 'cuisines': cuisines})
+        res.redirect("/places")
     }
     else {
         res.render("places/new", {error: "Not all fields are filled in"})
     }
 })
 
-router.get('/:id', (req, res) => {
-    res.send('GET /:id')
+router.get("/:index", (req, res) => {
+    if(places[req.params.index]){
+        res.render("places/viewplace", {place: places[req.params.index], index: req.params.index})
+    }
+    else {
+        res.render("error")
+    }
 })
 
-router.get('/:id/edit', (req, res) => {
-    res.send('GET /:id/edit')
+router.get("/:index/edit", (req, res) => {
+    let index = req.params.index
+    if(places[index] ){
+        res.render("places/edit", {place: places[index], index: index})
+    }
+    else {
+        res.render("error")
+    }
+})
+router.put("/:index", (req, res) => {
+    let index = req.params.index
+
+    if(places[index] && req.body){
+        places[index] = req.body
+        res.redirect(`/places/${index}`)
+    }
+    else {
+        res.render("error")
+    }
 })
 
-router.put('/:id', (req, res) => {
-    res.send('PUT /places/:id')
-})
 
-router.delete('/:id', (req, res) => {
-    res.send('DELETE /places/:id')
+router.delete("/:index", (req, res) => {
+    let index = req.params.index
+
+    if(places[index] && req.body){
+        //remove one element starting at the index
+        places.splice(index,1)
+        res.redirect(`/places`)
+    }
+    else {
+        res.render("error")
+    }
 })
 router.post('/:id/rant', (req, res) => {
     res.send('POST /places/:id/rant')
